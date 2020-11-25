@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bankin\' Test</string>
+    <string name="error_unavailable_data">Aucune donnée</string>
+    <string name="refresh">Rafraîchir</string>
 </resources>
