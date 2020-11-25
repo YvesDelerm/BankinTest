@@ -23,10 +23,10 @@
         android:layout_marginBottom="@dimen/smaller_margin"
         app:cardCornerRadius="@dimen/small_margin"
         app:cardElevation="@dimen/smaller_margin"
+        android:foreground="?attr/selectableItemBackground"
         android:onClick="@{clickListener}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/post_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/medium_margin"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:text="@{category.name}"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

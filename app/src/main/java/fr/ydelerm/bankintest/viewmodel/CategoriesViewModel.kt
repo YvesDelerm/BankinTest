@@ -10,6 +10,7 @@ import fr.ydelerm.bankintest.model.Category
 import fr.ydelerm.bankintest.repository.Repository
 import fr.ydelerm.bankintest.ui.CategoriesActivity
 import fr.ydelerm.bankintest.ui.CategoryClickListener
+import fr.ydelerm.bankintest.vo.Status
 import javax.inject.Inject
 
 class CategoriesViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,6 +26,10 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
 
     fun refreshData() {
         repository.refreshData()
+    }
+
+    fun getRequestStatus(): LiveData<Status> {
+        return repository.getRequestStatus()
     }
 
     fun getCategories(): LiveData<List<Category>> {
@@ -50,6 +55,11 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
         } else {
             null
         }
+    }
+
+    fun isDisplayHomeAsUpEnabled(): Boolean {
+        //TODO unit test
+        return (selectedCategoryId!=null)
     }
 
 }

@@ -2,4 +2,5 @@
     <string name="app_name">Bankin\' Test</string>
     <string name="error_unavailable_data">Aucune donnée</string>
     <string name="refresh">Rafraîchir</string>
+    <string name="error_occurred">"Erreur de chargement. Vérifiez votre connexion réseau. "</string>
 </resources>

@@ -3,13 +3,16 @@ package fr.ydelerm.bankintest.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.ydelerm.bankintest.BankinApplication
 import fr.ydelerm.bankintest.R
 import fr.ydelerm.bankintest.model.Category
 import fr.ydelerm.bankintest.viewmodel.CategoriesViewModel
+import fr.ydelerm.bankintest.vo.Status
 import kotlinx.android.synthetic.main.activity_categories.*
 
 class CategoriesActivity : AppCompatActivity(){
@@ -31,26 +34,49 @@ class CategoriesActivity : AppCompatActivity(){
         val tripViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
         tripViewModel.selectedCategoryId = selectedCategoryId
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(tripViewModel.isDisplayHomeAsUpEnabled())
+
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.isSaveEnabled = true
 
         tripViewModel.getCategories().observe(this) {
-            buttonRefresh.visibility = View.GONE //boolToVisibility(Status.ERROR == it.status)
-            textviewError.visibility = View.GONE //boolToVisibility(Status.ERROR == it.status)
             swipeContainer.isRefreshing = false //(Status.LOADING == it.status)
 
             val categoriesAdapter = CategoriesAdapter(it ?: ArrayList(), tripViewModel.getCategoryClickListener(this))
             recyclerView.swapAdapter(categoriesAdapter, true)
+        }
 
-            /*if (Status.ERROR == it.status) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }*/
+        tripViewModel.getRequestStatus().observe(this) {
+            buttonRefresh.visibility = boolToVisibility(Status.ERROR == it)
+            textviewError.visibility = boolToVisibility(Status.ERROR == it)
+
+            if (Status.ERROR == it) {
+                Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show()
+            }
         }
 
         buttonRefresh.setOnClickListener { tripViewModel.refreshData() }
         swipeContainer.setOnRefreshListener { tripViewModel.refreshData() }
 
         tripViewModel.refreshData()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun boolToVisibility(b: Boolean): Int {
+        return if (b) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 }
