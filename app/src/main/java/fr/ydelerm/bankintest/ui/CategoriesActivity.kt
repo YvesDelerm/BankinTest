@@ -41,19 +41,23 @@ class CategoriesActivity : AppCompatActivity(){
         recyclerView.isSaveEnabled = true
 
         tripViewModel.getCategories().observe(this) {
-            swipeContainer.isRefreshing = false //(Status.LOADING == it.status)
-
             val categoriesAdapter = CategoriesAdapter(it ?: ArrayList(), tripViewModel.getCategoryClickListener(this))
             recyclerView.swapAdapter(categoriesAdapter, true)
         }
 
         tripViewModel.getRequestStatus().observe(this) {
-            buttonRefresh.visibility = boolToVisibility(Status.ERROR == it)
-            textviewError.visibility = boolToVisibility(Status.ERROR == it)
-
             if (Status.ERROR == it) {
                 Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        tripViewModel.getErrorUiVisibility().observe(this) {
+            buttonRefresh.visibility = it
+            textviewError.visibility = it
+        }
+
+        tripViewModel.isLoading().observe(this) {
+            swipeContainer.isRefreshing = it
         }
 
         buttonRefresh.setOnClickListener { tripViewModel.refreshData() }
@@ -69,14 +73,6 @@ class CategoriesActivity : AppCompatActivity(){
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun boolToVisibility(b: Boolean): Int {
-        return if (b) {
-            View.VISIBLE
-        } else {
-            View.GONE
         }
     }
 }
