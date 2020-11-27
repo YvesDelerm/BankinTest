@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import fr.ydelerm.bankintest.repository.LocalDataSource
 import javax.inject.Singleton
 
 @Module
@@ -22,7 +23,7 @@ class PersistenceModule {
 
     @Singleton
     @Provides
-    fun resourceDAO(appDatabase: AppDatabase): ResourceDAO {
-        return appDatabase.resourceDAO()
+    fun localDataSource(appDatabase: AppDatabase): LocalDataSource {
+        return LocalDataSourceImpl(appDatabase)
     }
 }

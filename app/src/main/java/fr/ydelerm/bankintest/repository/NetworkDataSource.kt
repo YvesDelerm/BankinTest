@@ -1,10 +1,8 @@
-package fr.ydelerm.bankintest.api
+package fr.ydelerm.bankintest.repository
 
 import fr.ydelerm.bankintest.model.CategoryResult
 import io.reactivex.rxjava3.core.Single
-import retrofit2.http.GET
 
-interface BankinApi {
-    @GET("categories.json")
+interface NetworkDataSource {
     fun getCategoriesTree(): Single<CategoryResult>
 }

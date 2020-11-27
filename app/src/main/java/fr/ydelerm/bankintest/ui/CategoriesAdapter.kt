@@ -9,9 +9,15 @@ import fr.ydelerm.bankintest.R
 import fr.ydelerm.bankintest.databinding.CategoriesListItemBinding
 import fr.ydelerm.bankintest.model.Category
 
-class CategoriesAdapter(private val categories: List<Category>, private val categoryClickListener: CategoryClickListener?) :
+class CategoriesAdapter(
+    private val categories: List<Category>,
+    private val categoryClickListener: CategoryClickListener?
+) :
     RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
-    class CategoryViewHolder(@NonNull val binding: CategoriesListItemBinding, categoryClickListener: CategoryClickListener?):
+    class CategoryViewHolder(
+        @NonNull val binding: CategoriesListItemBinding,
+        categoryClickListener: CategoryClickListener?
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {

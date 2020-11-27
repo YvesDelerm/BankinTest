@@ -12,7 +12,7 @@ import fr.ydelerm.bankintest.viewmodel.CategoriesViewModel
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ NetworkModule::class, PersistenceModule::class, RepositoryModule::class ] )
+@Component(modules = [NetworkModule::class, PersistenceModule::class, RepositoryModule::class])
 interface ApplicationGraph {
     @Component.Builder
     interface Builder {

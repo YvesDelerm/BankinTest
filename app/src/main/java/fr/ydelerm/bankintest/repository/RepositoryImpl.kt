@@ -5,9 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import fr.ydelerm.bankintest.BankinApplication
-import fr.ydelerm.bankintest.api.BankinApi
 import fr.ydelerm.bankintest.model.Category
-import fr.ydelerm.bankintest.persistence.ResourceDAO
 import fr.ydelerm.bankintest.vo.Status
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -23,26 +21,28 @@ class RepositoryImpl(application: Application) : Repository {
         private const val LOGTAG = "RepositoryImpl"
     }
 
-    //TODO abstraire en passant par des DataSource
     @Inject
-    lateinit var bankinApi: BankinApi
+    lateinit var networkDataSource: NetworkDataSource
+
     @Inject
-    lateinit var resourceDAO: ResourceDAO
+    lateinit var localDataSource: LocalDataSource
 
     private val requestStatus = MutableLiveData<Status>()
 
     override fun refreshData() {
         requestStatus.postValue(Status.LOADING)
-        bankinApi.getUsers()
+        networkDataSource.getCategoriesTree()
             .subscribeOn(Schedulers.io())
             .subscribe(
-                { categoriesResult -> run {
-                    resourceDAO.insertResources(categoriesResult.categories)
-                    requestStatus.postValue(Status.SUCCESS)
-                } },
+                { categoriesResult ->
+                    run {
+                        localDataSource.insertCategories(categoriesResult.categories)
+                        requestStatus.postValue(Status.SUCCESS)
+                    }
+                },
                 { exception ->
                     run {
-                        Log.e(LOGTAG, "error while getting  categories", exception)
+                        Log.e(LOGTAG, "error while getting categories", exception)
                         requestStatus.postValue(Status.ERROR)
                     }
                 }
@@ -55,10 +55,10 @@ class RepositoryImpl(application: Application) : Repository {
     }
 
     override fun getCategories(): LiveData<List<Category>> {
-        return resourceDAO.getCategories()
+        return localDataSource.getCategories()
     }
 
     override fun getSubCategories(parentCategoryId: Int): LiveData<List<Category>> {
-        return resourceDAO.getSubCategories(parentCategoryId)
+        return localDataSource.getSubCategories(parentCategoryId)
     }
 }

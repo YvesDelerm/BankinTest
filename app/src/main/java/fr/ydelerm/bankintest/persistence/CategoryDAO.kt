@@ -8,9 +8,9 @@ import androidx.room.Query
 import fr.ydelerm.bankintest.model.Category
 
 @Dao
-interface ResourceDAO {
+interface CategoryDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertResources(categories: List<Category>)
+    fun insertCategories(categories: List<Category>)
 
     @Query("SELECT * FROM category where parentId is null")
     fun getCategories(): LiveData<List<Category>>

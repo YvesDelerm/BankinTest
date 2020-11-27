@@ -5,6 +5,6 @@ import androidx.room.RoomDatabase
 import fr.ydelerm.bankintest.model.Category
 
 @Database(entities = [Category::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
-    abstract fun resourceDAO(): ResourceDAO
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun categoryDAO(): CategoryDAO
 }

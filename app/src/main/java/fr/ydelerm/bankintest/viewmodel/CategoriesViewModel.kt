@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import fr.ydelerm.bankintest.BankinApplication
 import fr.ydelerm.bankintest.model.Category
@@ -14,7 +13,6 @@ import fr.ydelerm.bankintest.repository.Repository
 import fr.ydelerm.bankintest.ui.CategoriesActivity
 import fr.ydelerm.bankintest.ui.CategoryClickListener
 import fr.ydelerm.bankintest.vo.Status
-import kotlinx.android.synthetic.main.activity_categories.*
 import javax.inject.Inject
 
 class CategoriesViewModel(application: Application) : AndroidViewModel(application) {
@@ -37,11 +35,15 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getErrorUiVisibility(): LiveData<Int> {
-        return Transformations.map(repository.getRequestStatus()) {status -> boolToVisibility(Status.ERROR==status)}
+        return Transformations.map(repository.getRequestStatus()) { status ->
+            boolToVisibility(
+                Status.ERROR == status
+            )
+        }
     }
 
     fun isLoading(): LiveData<Boolean> {
-        return Transformations.map(repository.getRequestStatus()) {status -> (Status.LOADING == status)}
+        return Transformations.map(repository.getRequestStatus()) { status -> (Status.LOADING == status) }
     }
 
     fun getCategories(): LiveData<List<Category>> {
@@ -51,8 +53,8 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getCategoryClickListener(context: Context): CategoryClickListener? {
-        return if (selectedCategoryId==null) {
-            object: CategoryClickListener {
+        return if (selectedCategoryId == null) {
+            object : CategoryClickListener {
                 override fun onCategoryClicked(category: Category) {
                     val toSubCategories = Intent(context, CategoriesActivity::class.java)
                     toSubCategories.putExtra(
@@ -68,7 +70,7 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun isDisplayHomeAsUpEnabled(): Boolean {
-        return (selectedCategoryId!=null)
+        return (selectedCategoryId != null)
     }
 
     private fun boolToVisibility(b: Boolean): Int {

@@ -1,21 +1,18 @@
 package fr.ydelerm.bankintest.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.ydelerm.bankintest.BankinApplication
 import fr.ydelerm.bankintest.R
-import fr.ydelerm.bankintest.model.Category
 import fr.ydelerm.bankintest.viewmodel.CategoriesViewModel
 import fr.ydelerm.bankintest.vo.Status
 import kotlinx.android.synthetic.main.activity_categories.*
 
-class CategoriesActivity : AppCompatActivity(){
+class CategoriesActivity : AppCompatActivity() {
 
     companion object {
         const val PARAM_SELECTED_CATEGORY_ID = "selectedCategoryId"

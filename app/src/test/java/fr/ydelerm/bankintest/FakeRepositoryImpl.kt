@@ -7,13 +7,16 @@ import fr.ydelerm.bankintest.model.Category
 import fr.ydelerm.bankintest.repository.Repository
 import fr.ydelerm.bankintest.vo.Status
 
-class FakeRepositoryImpl(private val futureCategories: List<Category>?, private val futureSubCategories: List<Category>?) : Repository {
+class FakeRepositoryImpl(
+    private val futureCategories: List<Category>?,
+    private val futureSubCategories: List<Category>?
+) : Repository {
     private val status = MutableLiveData<Status>()
     private val categories = MutableLiveData<List<Category>>()
     private val subcategories = MutableLiveData<List<Category>>()
 
     override fun refreshData() {
-        if (futureCategories!=null && futureSubCategories!=null) {
+        if (futureCategories != null && futureSubCategories != null) {
             categories.value = futureCategories
             subcategories.value = futureSubCategories
             status.value = Status.SUCCESS
@@ -35,7 +38,10 @@ class FakeRepositoryImpl(private val futureCategories: List<Category>?, private 
         }
     }
 
-    private fun filterOnParent(categories: List<Category>?, parentCategoryId: Int): LiveData<List<Category>>{
+    private fun filterOnParent(
+        categories: List<Category>?,
+        parentCategoryId: Int
+    ): LiveData<List<Category>> {
         val newLiveData = MutableLiveData<List<Category>>()
         newLiveData.value = categories?.filter { it.parent?.id == parentCategoryId }
         return newLiveData
