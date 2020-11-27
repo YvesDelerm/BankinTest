@@ -10,6 +10,10 @@ android {
         targetCompatibility 1.8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     defaultConfig {
         applicationId "fr.ydelerm.bankintest"
         minSdkVersion 21
@@ -56,6 +60,10 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.2'
+    testImplementation 'androidx.test:core-ktx:1.3.0'
+    testImplementation 'org.robolectric:robolectric:4.4'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"

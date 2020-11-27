@@ -40,8 +40,15 @@ class CategoriesActivity : AppCompatActivity(){
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.isSaveEnabled = true
 
+        bindUi(tripViewModel)
+
+        tripViewModel.refreshData()
+    }
+
+    private fun bindUi(tripViewModel: CategoriesViewModel) {
         tripViewModel.getCategories().observe(this) {
-            val categoriesAdapter = CategoriesAdapter(it ?: ArrayList(), tripViewModel.getCategoryClickListener(this))
+            val categoriesAdapter =
+                CategoriesAdapter(it ?: ArrayList(), tripViewModel.getCategoryClickListener(this))
             recyclerView.swapAdapter(categoriesAdapter, true)
         }
 
@@ -62,8 +69,6 @@ class CategoriesActivity : AppCompatActivity(){
 
         buttonRefresh.setOnClickListener { tripViewModel.refreshData() }
         swipeContainer.setOnRefreshListener { tripViewModel.refreshData() }
-
-        tripViewModel.refreshData()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
