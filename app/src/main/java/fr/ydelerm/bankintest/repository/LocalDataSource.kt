@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import fr.ydelerm.bankintest.model.Category
 
 interface LocalDataSource {
-    fun insertCategories(categories: List<Category>)
+    fun insertCategories(categoriesToAdd: List<Category>)
 
     fun getCategories(): LiveData<List<Category>>
 

@@ -7,10 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import fr.ydelerm.bankintest.BankinApplication
 import fr.ydelerm.bankintest.model.Category
 import fr.ydelerm.bankintest.vo.Status
+import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-class RepositoryImpl(application: Application) : Repository {
+class RepositoryImpl(
+    application: Application,
+    private val scheduler: @NonNull Scheduler = Schedulers.io()
+) : Repository {
 
     init {
         (application as BankinApplication)
@@ -32,7 +37,7 @@ class RepositoryImpl(application: Application) : Repository {
     override fun refreshData() {
         requestStatus.postValue(Status.LOADING)
         networkDataSource.getCategoriesTree()
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(scheduler)
             .subscribe(
                 { categoriesResult ->
                     run {

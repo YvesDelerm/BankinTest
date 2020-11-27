@@ -4,8 +4,6 @@ import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import fr.ydelerm.bankintest.model.Category
-import fr.ydelerm.bankintest.model.Parent
 import fr.ydelerm.bankintest.viewmodel.CategoriesViewModel
 import org.junit.Assert.*
 import org.junit.Rule
@@ -60,7 +58,10 @@ class CategoriesViewModelTest {
     fun whenInMainCategories_displayMainCategories() {
         val categoriesViewModel = CategoriesViewModel(app)
         categoriesViewModel.repository =
-            FakeRepositoryImpl(futureCategories(), futureSubCategories())
+            FakeRepositoryImpl(
+                TestDataHelper().mainCategories(),
+                TestDataHelper().subCategories()
+            )
         categoriesViewModel.refreshData()
         assertEquals(View.GONE, categoriesViewModel.getErrorUiVisibility().getOrAwaitValue())
         val actualCategories = categoriesViewModel.getCategories().getOrAwaitValue()
@@ -72,7 +73,10 @@ class CategoriesViewModelTest {
     fun whenInSubCategories_displaySubCategories() {
         val categoriesViewModel = CategoriesViewModel(app)
         categoriesViewModel.repository =
-            FakeRepositoryImpl(futureCategories(), futureSubCategories())
+            FakeRepositoryImpl(
+                TestDataHelper().mainCategories(),
+                TestDataHelper().subCategories()
+            )
         categoriesViewModel.selectedCategoryId = 1
         categoriesViewModel.refreshData()
         assertEquals(View.GONE, categoriesViewModel.getErrorUiVisibility().getOrAwaitValue())
@@ -81,51 +85,4 @@ class CategoriesViewModelTest {
         assertEquals("Sub 1 1", actualCategories[0].name)
     }
 
-    private fun futureCategories(): List<Category>? {
-        return arrayListOf(
-            Category(
-                1, "res/1", "Category", "Main 1", null,
-                custom = false,
-                other = false,
-                isDeleted = false
-            ),
-            Category(
-                2, "res/2", "Category", "Main 2", null,
-                custom = false,
-                other = false,
-                isDeleted = false
-            )
-        )
-    }
-
-    private fun futureSubCategories(): List<Category>? {
-        val parent1 = Parent(1, "res/1", "Category")
-        val parent2 = Parent(2, "res/2", "Category")
-        return arrayListOf(
-            Category(
-                11, "res/11", "Category", "Sub 1 1", parent1,
-                custom = false,
-                other = false,
-                isDeleted = false
-            ),
-            Category(
-                12, "res/12", "Category", "Sub 1 2", parent1,
-                custom = false,
-                other = false,
-                isDeleted = false
-            ),
-            Category(
-                13, "res/13", "Category", "Sub 1 3", parent1,
-                custom = false,
-                other = false,
-                isDeleted = false
-            ),
-            Category(
-                21, "res/21", "Category", "Sub 2 1", parent2,
-                custom = false,
-                other = false,
-                isDeleted = false
-            )
-        )
-    }
 }
