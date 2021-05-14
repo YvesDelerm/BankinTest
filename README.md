@@ -1,2 +1,2 @@
-# BankinTest
-Technical test for Bankin'
+# Categories app
+Browsing categories app
